@@ -1,0 +1,7 @@
+[Unit]
+Description=Collect puppet agent run metrics
+
+[Service]
+Type=oneshot
+User=root
+ExecStart=/usr/share/prometheus-node-exporter-collectors/ptc-puppet-agent

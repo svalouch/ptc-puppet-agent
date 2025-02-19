@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+
+case "$1" in
+  purge)
+    rm -f /var/lib/prometheus/node-exporter/puppet-agent.prom
+    ;;
+esac
+
+#DEBHELPER#

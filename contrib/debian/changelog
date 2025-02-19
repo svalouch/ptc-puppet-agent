@@ -1,0 +1,6 @@
+ptc-puppet-agent (0.4.0-1) bookworm; urgency=medium
+
+  * Packaging for ptc-puppet-agent
+
+ -- Some One <some.one@example.com>  Wed, 19 Jan 2025 12:24:42 +0100
+

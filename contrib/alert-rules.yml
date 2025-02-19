@@ -1,0 +1,53 @@
+---
+# Alert rules to get you started
+groups:
+  - name: Puppet-Agent
+    rules:
+      - alert: Puppet-Agent - Run failures
+        expr: puppet_agent_run_successful == 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "The puppet run failed"
+          description: "Check the machine (puppet agent -vt), puppetboard or foreman for details"
+          # dashboard: https://my-grafana/puppet-agent-status
+          # foreman: https://foreman.company.org/….
+
+      - alert: Puppet-Agent - Many run-failures
+        expr: count(puppet_agent_run_successful == 0) > 5
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Many nodes show failing puppet runs"
+          description: "Check hiera and the environment repository for bad commits, consider rolling back to a known-good state. Check the puppet-master for general failures as well."
+
+      - alert: Puppet-Agent - Collector error
+        expr: puppet_agent_collector_success == 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Unable to determine state of puppet agent"
+          description: "The collector is unable to determine the state of the local puppet agent. Check the log for errors (journalctl -xu ptc-puppet-agent.service) or run it with the '-s' switch. If it happens after an agent update, the output format may have changed in an incompatible way and the collector needs adapting."
+
+      - alert: Puppet-Agent - Disabled on node
+        expr: puppet_agent_enabled == 0
+        for: 5m
+        labels:
+          severity: info
+        annotations:
+          summary: "The agent has been disabled locally"
+          description: "The agent may have been disabled during a change or to keep a nodes' state stable. This should not be the case for longer periods of time. If you are doing a change, consider adding a silence to denote the intention."
+
+      # This alert catches agents that run using the daemon mode and got stuck. This should not be an issue if puppet-agent is run from cron/timer
+      - alert: Puppet-Agent - No run for some time
+        expr: time() - puppet_agent_run_time > 4000 and puppet_agent_enabled == 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Last run was more than an hour ago and agent is not disabled."
+          description: "Puppet should run at least once per hour, the agent may be stuck. Check if the puppet-agent.service needs to be restarted (symptom: manual runs work, automated runs don't)."
+

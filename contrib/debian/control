@@ -1,0 +1,16 @@
+Source: ptc-puppet-agent
+Section: utils
+Priority: optional
+Maintainer: Some One <some.one@example.com>
+Build-Depends: debhelper-compat (= 13),
+Standards-Version: 4.6.1
+
+Package: ptc-puppet-agent
+Section: utils
+Architecture: any
+Depends: puppet-agent,
+         ${misc:Depends},
+Enhances: prometheus-node-exporter
+Description: Prometheus Textfile Collector -- Puppet Agent
+  Textfile collector for puppet agent metrics.
+

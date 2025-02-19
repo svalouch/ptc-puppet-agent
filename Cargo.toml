@@ -1,0 +1,28 @@
+[package]
+name = "ptc-puppet-agent"
+version = "0.4.0"
+authors = ["Stefan Valouch <svalouch@valouch.com>"]
+edition = "2021"
+license = "GPL-3.0-only"
+description = "Prometheus Textfile Collector for Puppet-Agent metrics"
+readme = "README.md"
+repository = "https://github.com/svalouch/ptc-puppet-agent"
+keywords = ["metrics", "prometheus", "puppet"]
+categories = ["command-line-utilities"]
+
+[dependencies]
+clap = { version = "4.5.30", features = ["derive", "env", "wrap_help"] }
+prometheus = { version = "0.13.4", default-features = false }
+regex = "1.11.1"
+serde = { version = "1.0.217", features = ["derive"] }
+serde_json = "1.0.138"
+serde_yaml = "0.9.34"
+tempfile = "3.17.1"
+tracing = "0.1.41"
+tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
+
+[profile.release]
+lto = "fat"
+codegen-units = 1
+strip = "symbols"
+
